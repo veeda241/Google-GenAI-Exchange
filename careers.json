@@ -1,0 +1,38 @@
+[
+    {
+        "title": "Data Scientist",
+        "description": "Analyzes and interprets complex data to help organizations make better decisions.",
+        "avg_salary": 120000,
+        "required_skills": ["Python", "Machine Learning", "Data Analysis", "SQL", "Statistics", "Communication", "Pandas", "Scikit-learn"]
+    },
+    {
+        "title": "Backend Developer",
+        "description": "Builds and maintains the server-side logic of web applications.",
+        "avg_salary": 110000,
+        "required_skills": ["Python", "Java", "Go", "Node.js", "SQL", "NoSQL", "REST API", "Docker", "AWS"]
+    },
+    {
+        "title": "Frontend Developer",
+        "description": "Implements the user interface and user experience of web applications.",
+        "avg_salary": 105000,
+        "required_skills": ["JavaScript", "React", "Angular", "Vue.js", "HTML", "CSS", "UI/UX Design", "REST API", "Git"]
+    },
+    {
+        "title": "Full-Stack Developer",
+        "description": "Works on both the frontend and backend of a web application.",
+        "avg_salary": 115000,
+        "required_skills": ["JavaScript", "React", "Node.js", "Python", "SQL", "REST API", "Git", "Docker", "Problem Solving"]
+    },
+    {
+        "title": "DevOps Engineer",
+        "description": "Works with developers and IT staff to oversee code releases and deployments.",
+        "avg_salary": 125000,
+        "required_skills": ["CI/CD", "Docker", "Kubernetes", "AWS", "Azure", "GCP", "Scripting", "Linux", "Network Security"]
+    },
+    {
+        "title": "Product Manager",
+        "description": "Defines the why, when, and what of the product that the engineering team builds.",
+        "avg_salary": 130000,
+        "required_skills": ["Project Management", "Agile", "Scrum", "Communication", "Market Research", "Problem Solving", "UI/UX Design"]
+    }
+]

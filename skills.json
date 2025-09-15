@@ -1,0 +1,20 @@
+[
+    "Python", "Java", "C++", "JavaScript", "Go",
+    "SQL", "NoSQL", "MongoDB", "PostgreSQL",
+    "React", "Angular", "Vue.js", "Node.js",
+    "Flask", "Django",
+    "Machine Learning", "Deep Learning", "Natural Language Processing", "NLP",
+    "Data Analysis", "Pandas", "NumPy", "Scikit-learn", "TensorFlow", "PyTorch",
+    "Cloud Computing", "AWS", "Azure", "Google Cloud Platform", "GCP",
+    "Docker", "Kubernetes", "CI/CD",
+    "Agile", "Scrum",
+    "Project Management", "Product Management",
+    "UI/UX Design", "Figma", "Adobe XD",
+    "Communication", "Teamwork", "Problem Solving",
+    "Git", "Version Control",
+    "Cybersecurity", "Network Security",
+    "Mobile Development", "iOS", "Android",
+    "REST API", "GraphQL",
+    "Software Testing", "Automation Testing",
+    "Big Data", "Hadoop", "Spark"
+]

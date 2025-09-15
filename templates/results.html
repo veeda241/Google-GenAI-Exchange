@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Career Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">&larr; Start Over</a>
+        <h1>Your Career Analysis</h1>
+
+        <div class="card">
+            <h2>Identified Skills</h2>
+            {% if analysis.user_skills %}
+                <ul class="skills-list">
+                    {% for skill in analysis.user_skills %}
+                        <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No specific skills identified. Try providing more detail.</p>
+            {% endif %}
+        </div>
+
+        <h2>Top Career Recommendations</h2>
+        {% for rec in analysis.recommendations %}
+        <div class="card">
+            <h3>{{ rec.career.title }} <span class="score">(Match: {{ "%.0f"|format(rec.score * 100) }}%)</span></h3>
+            <p>{{ rec.career.description }}</p>
+            
+            {% if loop.first and analysis.skill_gap %}
+                <h4>Skill Gap</h4>
+                <p>To excel in this role, consider learning the following:</p>
+                <ul class="skills-list gap">
+                    {% for skill in analysis.skill_gap %}
+                        <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+
+                {% if analysis.course_recommendations %}
+                    <h4>Recommended Courses</h4>
+                    <ul>
+                        {% for course in analysis.course_recommendations %}
+                            <li><a href="{{ course.url }}" target="_blank">{{ course.title }}</a> ({{ course.provider }})</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endif %}
+        </div>
+        {% else %}
+            <p>Could not generate recommendations based on the provided input.</p>
+        {% endfor %}
+
+    </div>
+</body>
+</html>

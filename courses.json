@@ -1,0 +1,32 @@
+[
+    {
+        "skill": "Python",
+        "title": "Complete Python Bootcamp",
+        "provider": "Udemy",
+        "url": "https://www.udemy.com/course/complete-python-bootcamp/"
+    },
+    {
+        "skill": "Machine Learning",
+        "title": "Machine Learning by Andrew Ng",
+        "provider": "Coursera",
+        "url": "https://www.coursera.org/learn/machine-learning"
+    },
+    {
+        "skill": "React",
+        "title": "React - The Complete Guide",
+        "provider": "Udemy",
+        "url": "https://www.udemy.com/course/react-the-complete-guide-incl-redux/"
+    },
+    {
+        "skill": "Docker",
+        "title": "Docker for the Absolute Beginner",
+        "provider": "Udemy",
+        "url": "https://www.udemy.com/course/docker-for-the-absolute-beginner/"
+    },
+    {
+        "skill": "AWS",
+        "title": "AWS Certified Cloud Practitioner",
+        "provider": "freeCodeCamp",
+        "url": "https://www.youtube.com/watch?v=SOTamWNgDKc"
+    }
+]
