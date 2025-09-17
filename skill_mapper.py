@@ -6,8 +6,7 @@ import re
 # The value is a list of additional regex-safe strings to match.
 SKILL_VARIATIONS = {
     "Node.js": ["NodeJS"],
-    # Example for future use:
-    # "UI/UX Design": ["UI/UX"],
+    "UI/UX Design": ["UI/UX"],
 }
 
 def extract_skills(text, skills_list):

@@ -1,19 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Career Advisor</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>AI Career Advisor</h1>
-        <p>Enter your skills, a summary of your experience, or paste your resume text below to get personalized career recommendations.</p>
-        <form action="/analyze" method="post">
-            <textarea name="user_input" rows="15" placeholder="e.g., Proficient in Python, JavaScript, and React. Experience with data analysis using Pandas and building REST APIs with Flask..."></textarea>
-            <button type="submit">Analyze My Skills</button>
-        </form>
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="analysis-container">
+    <h1>Career Path Analyzer</h1>
+    <p class="subtitle">Describe your skills, interests, and past projects to get personalized career recommendations.</p>
+
+    <form id="analysis-form" action="{{ url_for('analyze') }}" method="POST">
+        <div class="form-group">
+            <textarea name="user_input" id="user_input" rows="10" placeholder="e.g., 'I am a student interested in Python and data analysis. I have built a small project using Pandas and Scikit-learn. I'm also curious about cloud technologies like AWS.'"></textarea>
+        </div>
+
+        <div class="template-picker">
+            <p>Or, start with a template:</p>
+            <div class="template-buttons">
+                <button type="button" class="template-btn" data-template="I am a computer science student in my final year. I'm proficient in Python and Java. I have completed projects on web development using Flask and a simple machine learning model for sentiment analysis with Scikit-learn. I am looking for entry-level roles in software engineering or data science.">Student</button>
+                <button type="button" class="template-btn" data-template="I have been working in marketing for 5 years and have strong project management and communication skills. I have recently completed a web development bootcamp where I learned JavaScript, React, and Node.js. I built a full-stack e-commerce site as my final project. I am looking to transition into a junior front-end or full-stack developer role.">Career Changer</button>
+                <button type="button" class="template-btn" data-template="I am a senior software engineer with 8+ years of experience, specializing in backend systems with Go and Python. I have extensive experience with cloud infrastructure on AWS, including EC2, S3, and Lambda. I've designed and maintained CI/CD pipelines using Docker and Kubernetes. I am interested in roles related to system architecture or a tech lead position.">Experienced Pro</button>
+            </div>
+        </div>
+
+        <button type="submit" class="analyze-button">Analyze My Path</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Page specific logic ---
+    const analysisForm = document.getElementById('analysis-form');
+    const spinnerOverlay = document.getElementById('loading-spinner-overlay');
+    const userInput = document.getElementById('user_input');
+    const templateButtons = document.querySelectorAll('.template-btn');
+
+    if (analysisForm && spinnerOverlay) {
+        // This event listener is for showing the spinner on form submission
+        analysisForm.addEventListener('submit', (event) => {
+            // Prevent form submission and spinner if textarea is empty
+            if (userInput.value.trim() === '') {
+                event.preventDefault();
+                alert('Please describe your skills and interests before analyzing.');
+                return;
+            }
+            spinnerOverlay.classList.add('visible');
+        });
+    }
+
+    templateButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const templateText = button.getAttribute('data-template');
+            userInput.value = templateText;
+            userInput.focus(); // Bring focus to the textarea
+        });
+    });
+
+    // --- Global Theme Toggling Logic ---
+    const themeToggle = document.getElementById('theme-toggle');
+    const htmlElement = document.documentElement;
+
+    const setTheme = (theme) => {
+        htmlElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        if (themeToggle) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+    };
+
+    const initTheme = () => {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else {
+            setTheme(prefersDark ? 'dark' : 'light');
+        }
+    };
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            setTheme(currentTheme === 'light' ? 'dark' : 'light');
+        });
+    }
+
+    initTheme();
+});
+</script>
+{% endblock %}

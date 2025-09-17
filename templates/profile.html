@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="profile-container">
+    <h1>{{ current_user.username }}'s Profile</h1>
+    <h2>Past Analyses</h2>
+
+    {% if analyses %}
+        <div class="analysis-history">
+            {% for analysis in analyses %}
+            <a href="{{ url_for('view_analysis', analysis_id=analysis.id) }}" class="analysis-card-link">
+                <div class="career-card analysis-card">
+                    <div class="analysis-header">
+                        <h3>Analysis from {{ analysis.timestamp.strftime('%Y-%m-%d %H:%M') }}</h3>
+                    </div>
+                    <div class="analysis-body">
+                        <h4>Your Input:</h4>
+                        <pre class="input-preview">{{ analysis.user_input[:300] }}{% if analysis.user_input|length > 300 %}...{% endif %}</pre>
+    
+                        <h4>Identified Skills:</h4>
+                        <div class="skills-container">
+                            {% for skill in analysis.analysis_results.user_skills %}
+                                <span class="skill-tag-user">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+    
+                        <h4>Top Recommendation:</h4>
+                        {% if analysis.analysis_results.recommendations and analysis.analysis_results.recommendations|length > 0 %}
+                            {% set top_rec = analysis.analysis_results.recommendations[0] %}
+                            <p class="top-rec-summary">
+                                <strong>{{ top_rec.career.title }}</strong>
+                                <span class="match-score">{{ (top_rec['score'] * 100) | int }}% Match</span>
+                            </p>
+                        {% else %}
+                            <p>No recommendations were generated for this analysis.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have no past analyses. Go to the <a href="{{ url_for('index') }}">home page</a> to get started!</p>
+    {% endif %}
+</div>
+{% endblock %}

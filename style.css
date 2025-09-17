@@ -1,0 +1,487 @@
+:root {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #242424;
+    --bg-tertiary: #333;
+    --text-primary: #f0f0f0;
+    --text-secondary: #ccc;
+    --text-muted: #aaa;
+    --border-color: #333;
+    --border-color-strong: #444;
+    --accent-primary: #007bff;
+    --accent-primary-hover: #0056b3;
+    --accent-secondary: #00aaff;
+    --accent-success: #28a745;
+    --accent-warning: #e89f23;
+    --accent-warning-text: #1a1a1a;
+    --accent-danger: #ff4d4d;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow-color-light: rgba(0, 0, 0, 0.2);
+    --shadow-color-focus: rgba(0, 123, 255, 0.25);
+    --spinner-track: #444;
+    --spinner-overlay-bg: rgba(26, 26, 26, 0.85);
+}
+
+[data-theme="light"] {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --border-color-strong: #ced4da;
+    --accent-secondary: #007bff;
+    --accent-warning: #ffc107;
+    --accent-warning-text: #212529;
+    --accent-danger: #dc3545;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --shadow-color-light: rgba(0, 0, 0, 0.1);
+    --spinner-track: #e9ecef;
+    --spinner-overlay-bg: rgba(255, 255, 255, 0.85);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s;
+}
+
+/* New container for pages that need full-screen centering (like login/signup) */
+.page-center-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+@keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+}
+
+#gatekeeper {
+    padding: 2rem 3rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    box-shadow: 0 4px 15px var(--shadow-color-light);
+    text-align: center;
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+#gatekeeper h1 {
+    margin-top: 0;
+    font-weight: 300;
+}
+
+main#exclusive-content {
+    /* This animation will play when the element is revealed (display is not 'none') */
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+input[type="password"] {
+    padding: 0.75rem;
+    margin-right: 0.5rem;
+    border: 1px solid var(--border-color-strong);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-radius: 4px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--shadow-color-focus);
+}
+
+button {
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    background-color: var(--accent-primary);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.analyze-button {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: var(--accent-primary-hover);
+}
+
+.hidden {
+    display: none;
+}
+
+#error-message {
+    color: var(--accent-danger);
+    margin-top: 1rem;
+    height: 1em;
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.fade-out {
+    animation: fadeOut 0.4s ease-in forwards;
+}
+
+/* --- Loading Spinner Styles --- */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--spinner-overlay-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.spinner-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.spinner {
+    border: 6px solid var(--spinner-track);
+    border-top: 6px solid var(--accent-primary);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Analysis Form Page Styles --- */
+.analysis-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    text-align: center;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.analysis-container h1 {
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.analysis-container .subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+}
+
+.analysis-container textarea {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color-strong);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+/* --- Template Picker Styles --- */
+.template-picker {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.template-picker p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.template-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.template-btn {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color-strong);
+    color: var(--text-secondary);
+    border-radius: 20px;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* --- Theme Toggle Button --- */
+.theme-toggle-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    transition: background-color 0.2s, transform 0.2s, color 0.2s;
+}
+
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+/* --- Results Page Styles --- */
+
+.results-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem 2rem;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.results-header, .recommendations-header {
+    text-align: center;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+}
+
+.back-link-container {
+    margin-bottom: 2rem;
+}
+
+.back-link {
+    color: var(--accent-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.summary-card, .career-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    text-align: left; /* Override body text-align */
+}
+
+.career-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+.summary-card h2, .career-card h3, .career-card h4 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border-color-strong);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.skill-tag-user, .skill-tag-gap {
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.skill-tag-user {
+    background-color: var(--accent-primary);
+    color: #fff;
+}
+
+.skill-tag-gap {
+    background-color: var(--accent-warning);
+    color: var(--accent-warning-text);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.card-header h3 {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.match-score {
+    background-color: var(--accent-success);
+    color: #fff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.card-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.learning-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.learning-section li a {
+    color: var(--accent-secondary);
+    text-decoration: none;
+}
+
+.learning-section li a:hover {
+    text-decoration: underline;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.video-card {
+    background-color: var(--bg-tertiary);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: transform 0.2s ease;
+    display: block;
+}
+
+.video-card:hover {
+    transform: scale(1.03);
+}
+
+.video-card img {
+    width: 100%;
+    display: block;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.video-title {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* --- Profile Page Styles --- */
+.profile-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem 2rem;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.profile-container h1, .profile-container h2 {
+    text-align: center;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+}
+
+.analysis-card-link {
+    text-decoration: none;
+    color: inherit; /* Inherit text color from parent */
+    display: block; /* Make the whole card clickable */
+}
+
+.analysis-card {
+    /* This class is used alongside .career-card */
+    margin-bottom: 2rem;
+}
+
+.analysis-card h4 {
+    margin-top: 1.5rem;
+    border-bottom: 1px solid var(--border-color-strong);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.input-preview {
+    background-color: var(--bg-primary);
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color-strong);
+    white-space: pre-wrap; /* Wrap long lines */
+    word-break: break-word;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.top-rec-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+}
