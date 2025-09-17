@@ -1,15 +1,10 @@
-# Python
+# Environment variables
+# Keep your secret keys and credentials out of version control
+.env
+
+# Python virtual environment
+venv/
+
+# Python cache
 __pycache__/
 *.pyc
-
-# Virtual Environment
-venv/
-/venv/
-
-# IDE / Editor specific
-.vscode/
-.idea/
-
-# OS-specific
-.DS_Store
-Thumbs.db
