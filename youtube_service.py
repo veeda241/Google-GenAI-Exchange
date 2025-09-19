@@ -6,25 +6,38 @@ from googleapiclient.errors import HttpError
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'
 
-_youtube_service_instance = None
+# A dictionary to hold the state of the YouTube service instance.
+# 'checked' will be True after the first attempt to build the service.
+# 'instance' will hold the service object or None.
+_youtube_service_state = {'instance': None, 'checked': False}
 
 def get_youtube_service():
-    """Returns a YouTube service object, or None if API key is missing."""
-    global _youtube_service_instance
-    # If the service object is already created, return it to avoid rebuilding.
-    if _youtube_service_instance:
-        return _youtube_service_instance
+    """
+    Returns a YouTube service object, or None if API key is missing.
+    Caches the result to avoid repeated checks and warnings.
+    """
+    global _youtube_service_state
 
-    # Read the API key from the environment when the function is first called.
+    # If we've already checked, return the cached instance (which could be None).
+    if _youtube_service_state['checked']:
+        return _youtube_service_state['instance']
+
+    # Mark that we are performing the check now.
+    _youtube_service_state['checked'] = True
+
+    # Read the API key from the environment. This happens only once.
     API_KEY = os.getenv('YOUTUBE_API_KEY')
     if not API_KEY:
         print("Warning: YOUTUBE_API_KEY environment variable not set. YouTube features will be disabled.")
+        # The instance remains None, and we won't check again.
         return None
     try:
-        _youtube_service_instance = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=API_KEY)
-        return _youtube_service_instance
+        service_instance = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=API_KEY)
+        _youtube_service_state['instance'] = service_instance
+        return service_instance
     except Exception as e:
         print(f"Error building YouTube service: {e}")
+        # The instance remains None, and we won't check again.
         return None
 
 def extract_video_id_from_url(url):

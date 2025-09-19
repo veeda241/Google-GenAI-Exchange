@@ -1,29 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="hero-section">
+    <h1>Unlock Your Career Potential</h1>
+    <p class="hero-subtitle">Our AI-powered analysis maps your skills to the perfect career path. Get personalized recommendations, identify skill gaps, and discover resources to help you succeed.</p>
+</div>
+
 <div class="analysis-container">
-    <h1>Career Path Analyzer</h1>
-    <p class="subtitle">Describe your skills, interests, and past projects to get personalized career recommendations.</p>
+    <div class="summary-card form-card">
+        <h2>Start Your Analysis</h2>
+        <p class="subtitle">Describe your skills, interests, and past projects below to get started.</p>
 
-    <form id="analysis-form" action="{{ url_for('analyze') }}" method="POST">
-        <div class="form-group">
-            <textarea name="user_input" id="user_input" rows="10" placeholder="e.g., 'I am a student interested in Python and data analysis. I have built a small project using Pandas and Scikit-learn. I'm also curious about cloud technologies like AWS.'"></textarea>
-        </div>
-
-        <div class="template-picker">
-            <p>Or, start with a template:</p>
-            <div class="template-buttons">
-                <button type="button" class="template-btn" data-template="I am a computer science student in my final year. I'm proficient in Python and Java. I have completed projects on web development using Flask and a simple machine learning model for sentiment analysis with Scikit-learn. I am looking for entry-level roles in software engineering or data science.">Student</button>
-                <button type="button" class="template-btn" data-template="I have been working in marketing for 5 years and have strong project management and communication skills. I have recently completed a web development bootcamp where I learned JavaScript, React, and Node.js. I built a full-stack e-commerce site as my final project. I am looking to transition into a junior front-end or full-stack developer role.">Career Changer</button>
-                <button type="button" class="template-btn" data-template="I am a senior software engineer with 8+ years of experience, specializing in backend systems with Go and Python. I have extensive experience with cloud infrastructure on AWS, including EC2, S3, and Lambda. I've designed and maintained CI/CD pipelines using Docker and Kubernetes. I am interested in roles related to system architecture or a tech lead position.">Experienced Pro</button>
+        <form id="analysis-form" action="{{ url_for('analyze') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="user_input" class="form-label">Your Skills & Experience</label>
+                <textarea name="user_input" id="user_input" rows="6" placeholder="Enter your skills, roles, or past projects (e.g., Hackathon Participant, Club Leader, Data Analytics Enthusiast)"></textarea>
             </div>
-        </div>
 
-        <button type="submit" class="analyze-button">Analyze My Path</button>
-    </form>
+            <div class="upload-section">
+                <div class="or-divider"><span>OR</span></div>
+                <label for="resume-upload" class="upload-label">
+                    Upload Resume
+                </label>
+                <input type="file" id="resume-upload" name="resume_file" class="hidden-file-input" accept=".pdf,.docx,.txt">
+                <p id="file-name-display" class="file-name-display"></p>
+            </div>
+
+            <div class="template-picker">
+                <p>Or, start with a template:</p>
+                <div class="template-buttons">
+                    <button type="button" class="template-btn" data-template="I am a computer science student in my final year. I'm proficient in Python and Java. I have completed projects on web development using Flask and a simple machine learning model for sentiment analysis with Scikit-learn. I am looking for entry-level roles in software engineering or data science.">Student</button>
+                    <button type="button" class="template-btn" data-template="I have been working in marketing for 5 years and have strong project management and communication skills. I have recently completed a web development bootcamp where I learned JavaScript, React, and Node.js. I built a full-stack e-commerce site as my final project. I am looking to transition into a junior front-end or full-stack developer role.">Career Changer</button>
+                    <button type="button" class="template-btn" data-template="I am a senior software engineer with 8+ years of experience, specializing in backend systems with Go and Python. I have extensive experience with cloud infrastructure on AWS, including EC2, S3, and Lambda. I've designed and maintained CI/CD pipelines using Docker and Kubernetes. I am interested in roles related to system architecture or a tech lead position.">Experienced Pro</button>
+                </div>
+            </div>
+
+            <button type="submit" class="analyze-button">Analyze My Path</button>
+        </form>
+    </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+{% raw %}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     // --- Page specific logic ---
@@ -31,14 +49,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const spinnerOverlay = document.getElementById('loading-spinner-overlay');
     const userInput = document.getElementById('user_input');
     const templateButtons = document.querySelectorAll('.template-btn');
+    const fileInput = document.getElementById('resume-upload');
+    const fileNameDisplay = document.getElementById('file-name-display');
+
+    // Auto-expanding textarea
+    userInput.addEventListener('input', () => {
+        userInput.style.height = 'auto'; // Reset height to recalculate
+        userInput.style.height = (userInput.scrollHeight) + 'px'; // Set to content height
+    });
+
+    // Normalize pasted text
+    userInput.addEventListener('paste', (event) => {
+        event.preventDefault();
+        const text = event.clipboardData.getData('text/plain');
+
+        // 1. Join words broken by a hyphen at the end of a line
+        let processedText = text.replace(/-\r?\n/g, '');
+
+        // 2. Normalize all line endings to \n
+        processedText = processedText.replace(/\r\n?/g, '\n');
+
+        // 3. Use a placeholder to preserve intentional paragraph breaks (double newlines)
+        const placeholder = '{{PARAGRAPH_BREAK}}';
+        processedText = processedText.replace(/\n\n/g, placeholder);
+        processedText = processedText.replace(/\n/g, ' '); // Replace remaining single newlines with a space
+        processedText = processedText.replace(new RegExp(placeholder, 'g'), '\n\n'); // Restore paragraph breaks
+
+        // 4. Reduce multiple spaces to a single space and trim whitespace
+        processedText = processedText.replace(/ {2,}/g, ' ').trim();
+
+        // 5. Insert the processed text at the cursor position
+        const start = userInput.selectionStart;
+        const end = userInput.selectionEnd;
+        userInput.value = userInput.value.substring(0, start) + processedText + userInput.value.substring(end);
+        
+        // 6. Move cursor to the end of pasted text and trigger auto-expand
+        userInput.selectionStart = userInput.selectionEnd = start + processedText.length;
+        userInput.dispatchEvent(new Event('input', { bubbles: true }));
+    });
 
     if (analysisForm && spinnerOverlay) {
         // This event listener is for showing the spinner on form submission
         analysisForm.addEventListener('submit', (event) => {
-            // Prevent form submission and spinner if textarea is empty
-            if (userInput.value.trim() === '') {
+            // Prevent form submission if both inputs are empty
+            if (userInput.value.trim() === '' && fileInput.files.length === 0) {
                 event.preventDefault();
-                alert('Please describe your skills and interests before analyzing.');
+                alert('Please describe your skills or upload a resume before analyzing.');
                 return;
             }
             spinnerOverlay.classList.add('visible');
@@ -50,7 +106,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const templateText = button.getAttribute('data-template');
             userInput.value = templateText;
             userInput.focus(); // Bring focus to the textarea
+            // Clear file input if user chooses a template
+            fileInput.value = '';
+            fileNameDisplay.textContent = '';
+            userInput.dispatchEvent(new Event('input', { bubbles: true })); // Trigger auto-expand
         });
+    });
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            fileNameDisplay.textContent = `Selected: ${fileInput.files[0].name}`;
+            userInput.value = ''; // Clear textarea if a file is selected
+        } else {
+            fileNameDisplay.textContent = '';
+        }
     });
 
     // --- Global Theme Toggling Logic ---
@@ -86,4 +155,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initTheme();
 });
 </script>
+{% endraw %}
 {% endblock %}

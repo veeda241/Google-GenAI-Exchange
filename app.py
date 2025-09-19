@@ -20,6 +20,18 @@ else:
     # This is not a critical error, as the key might be set in the system's environment
     print("Info: .env file not found. Assuming environment variables are set globally.")
 
+# --- Resume Parsing Imports and Warnings ---
+try:
+    import PyPDF2
+except ImportError:
+    PyPDF2 = None
+    print("Warning: PyPDF2 is not installed. PDF resume uploads will not work. Run 'pip install PyPDF2'")
+try:
+    import docx
+except ImportError:
+    docx = None
+    print("Warning: python-docx is not installed. DOCX resume uploads will not work. Run 'pip install python-docx'")
+
 app = Flask(__name__)
 
 # --- New Configurations for Database and Session Management ---
@@ -79,6 +91,12 @@ def signup():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+
+        if password != confirm_password:
+            flash('Passwords do not match. Please try again.', 'error')
+            return redirect(url_for('signup'))
+
         user = User.query.filter_by(username=username).first()
         if user:
             flash('Username already exists. Please choose a different one.', 'error')
@@ -134,13 +152,60 @@ def view_analysis(analysis_id):
 
     return render_template('results.html', analysis=analysis.analysis_results, title="Past Analysis Results", from_history=True)
 
+def extract_text_from_file(file_storage):
+    """Extracts text from an uploaded file (PDF, DOCX, TXT)."""
+    filename = file_storage.filename
+    text = ""
+    if filename.endswith('.pdf'):
+        if not PyPDF2:
+            flash("PDF processing is not available. Please install PyPDF2.", "error")
+            return None
+        try:
+            pdf_reader = PyPDF2.PdfReader(file_storage.stream)
+            for page in pdf_reader.pages:
+                text += page.extract_text() or ""
+        except Exception as e:
+            print(f"Error reading PDF file: {e}")
+            flash("Could not read the uploaded PDF file. It might be corrupted or protected.", "error")
+            return None
+    elif filename.endswith('.docx'):
+        if not docx:
+            flash("DOCX processing is not available. Please install python-docx.", "error")
+            return None
+        try:
+            document = docx.Document(file_storage.stream)
+            for para in document.paragraphs:
+                text += para.text + '\n'
+        except Exception as e:
+            print(f"Error reading DOCX file: {e}")
+            flash("Could not read the uploaded DOCX file.", "error")
+            return None
+    elif filename.endswith('.txt'):
+        try:
+            text = file_storage.stream.read().decode('utf-8')
+        except Exception as e:
+            print(f"Error reading TXT file: {e}")
+            flash("Could not read the uploaded TXT file.", "error")
+            return None
+    else:
+        flash("Unsupported file type. Please upload a PDF, DOCX, or TXT file.", "error")
+        return None
+    return text
+
 @app.route('/analyze', methods=['POST'])
 @login_required # This route is now protected
 def analyze():
     """Processes user input and displays recommendations."""
     user_input = request.form.get('user_input', '')
+    resume_file = request.files.get('resume_file')
 
-    if not user_input or not SKILLS_LIST or not CAREERS_DATA or not COURSES_DATA:
+    if resume_file and resume_file.filename != '':
+        extracted_text = extract_text_from_file(resume_file)
+        if extracted_text is None:
+            return redirect(url_for('index')) # Flash message is already set in the helper
+        user_input = extracted_text
+
+    if not user_input.strip() or not SKILLS_LIST or not CAREERS_DATA or not COURSES_DATA:
         # Handle case where data failed to load or input is empty
         flash("Could not process request due to missing data or input.", "error")
         return redirect(url_for('index'))

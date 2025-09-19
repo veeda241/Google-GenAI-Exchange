@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Marketing Manager",
+    "description": "Develops and implements marketing strategies to meet consumer needs and maximize profits. Requires strong communication, analytical, and creative skills.",
+    "required_skills": ["Marketing Strategy", "Communication", "Project Management", "Data Analysis", "SEO/SEM"],
+    "project_ideas": [
+      { "title": "Develop a 3-Month Marketing Plan for a New Product Launch", "youtube_url": "https://www.youtube.com/watch?v=s5t1zD3tT2s" },
+      { "title": "Analyze a Competitor's Social Media Strategy", "youtube_url": "https://www.youtube.com/watch?v=wp--g_hGj-E" }
+    ]
+  },
+  {
+    "title": "Human Resources Specialist",
+    "description": "Responsible for recruiting, screening, interviewing, and placing workers. They may also handle employee relations, compensation and benefits, and training.",
+    "required_skills": ["Communication", "Recruiting", "Employee Relations", "HR Policies", "Problem-Solving"],
+    "project_ideas": [
+      { "title": "Create a New Employee Onboarding Program", "youtube_url": "https://www.youtube.com/watch?v=D97N3IZ20gM" },
+      { "title": "Develop a Workshop on Workplace Diversity and Inclusion", "youtube_url": "https://www.youtube.com/watch?v=3g-mfcvq74c" }
+    ]
+  },
+  {
+    "title": "Graphic Designer",
+    "description": "Creates visual concepts, using computer software or by hand, to communicate ideas that inspire, inform, and captivate consumers.",
+    "required_skills": ["Adobe Creative Suite", "Typography", "UI/UX Principles", "Creativity", "Communication"],
+    "project_ideas": [
+      { "title": "Design a Brand Identity for a Fictional Company", "youtube_url": "https://www.youtube.com/watch?v=5x_64O6K31A" },
+      { "title": "Create a Mobile App UI Mockup", "youtube_url": "https://www.youtube.com/watch?v=J29P6ORP33I" }
+    ]
+  }
+]
