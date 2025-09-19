@@ -20,24 +20,16 @@ def recommend_careers(user_skills, careers_data):
 
     for career in careers_data:
         required_skills_set = set(skill.lower() for skill in career.get('required_skills', []))
-        
 
         score = calculate_jaccard_similarity(user_skills_set, required_skills_set)
-        
-        # Filter to show any career with a match score greater than 0.1% (0.001)
-        if score > 0.001:
-            recommendations.append({
-                'career': career,
-                'match_score': score
-            })
 
         recommendations.append({
             'career': career,
-            'match_score': score
+            'score': score
         })
 
-    # Sort recommendations by match score in descending order
-    return sorted(recommendations, key=lambda x: x['match_score'], reverse=True)
+    # Sort recommendations by score in descending order
+    return sorted(recommendations, key=lambda x: x['score'], reverse=True)
 
 def analyze_skill_gap(user_skills, required_skills):
     """Identifies skills the user is missing for a specific career."""

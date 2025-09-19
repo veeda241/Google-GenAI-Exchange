@@ -155,42 +155,47 @@ def view_analysis(analysis_id):
 def extract_text_from_file(file_storage):
     """Extracts text from an uploaded file (PDF, DOCX, TXT)."""
     filename = file_storage.filename
-    text = ""
-    if filename.endswith('.pdf'):
+    stream = file_storage.stream
+
+    def read_pdf(s):
         if not PyPDF2:
             flash("PDF processing is not available. Please install PyPDF2.", "error")
             return None
-        try:
-            pdf_reader = PyPDF2.PdfReader(file_storage.stream)
-            for page in pdf_reader.pages:
-                text += page.extract_text() or ""
-        except Exception as e:
-            print(f"Error reading PDF file: {e}")
-            flash("Could not read the uploaded PDF file. It might be corrupted or protected.", "error")
-            return None
-    elif filename.endswith('.docx'):
+        pdf_reader = PyPDF2.PdfReader(s)
+        return "".join(page.extract_text() or "" for page in pdf_reader.pages)
+
+    def read_docx(s):
         if not docx:
             flash("DOCX processing is not available. Please install python-docx.", "error")
             return None
-        try:
-            document = docx.Document(file_storage.stream)
-            for para in document.paragraphs:
-                text += para.text + '\n'
-        except Exception as e:
-            print(f"Error reading DOCX file: {e}")
-            flash("Could not read the uploaded DOCX file.", "error")
-            return None
-    elif filename.endswith('.txt'):
-        try:
-            text = file_storage.stream.read().decode('utf-8')
-        except Exception as e:
-            print(f"Error reading TXT file: {e}")
-            flash("Could not read the uploaded TXT file.", "error")
-            return None
-    else:
+        document = docx.Document(s)
+        return "\n".join(para.text for para in document.paragraphs)
+
+    def read_txt(s):
+        return s.read().decode('utf-8')
+
+    handlers = {
+        '.pdf': {'func': read_pdf, 'name': 'PDF'},
+        '.docx': {'func': read_docx, 'name': 'DOCX'},
+        '.txt': {'func': read_txt, 'name': 'TXT'},
+    }
+
+    file_ext = os.path.splitext(filename)[1].lower()
+    handler_info = handlers.get(file_ext)
+
+    if not handler_info:
         flash("Unsupported file type. Please upload a PDF, DOCX, or TXT file.", "error")
         return None
-    return text
+
+    try:
+        # The handler function might return None if a dependency is missing,
+        # in which case it will have already flashed a message.
+        return handler_info['func'](stream)
+    except Exception as e:
+        file_type_name = handler_info['name']
+        print(f"Error reading {file_type_name} file: {e}")
+        flash(f"Could not read the uploaded {file_type_name} file. It might be corrupted or protected.", "error")
+        return None
 
 @app.route('/analyze', methods=['POST'])
 @login_required # This route is now protected
