@@ -53,11 +53,15 @@
             <div class="projects-section">
                 <h4>Project Ideas to Build Your Portfolio</h4>
                 <div class="video-grid">
-                {% for video in rec.career.project_ideas_detailed %}
-                    <a href="https://www.youtube.com/watch?v={{ video.id }}" target="_blank" class="video-card">
-                        <img src="{{ video.thumbnail }}" alt="{{ video.title }}">
-                        <p class="video-title">{{ video.title }}</p>
-                    </a>
+                {% for project in rec.career.project_ideas_detailed %}
+                    {% if project.details %}
+                        <a href="https://www.youtube.com/watch?v={{ project.details.id }}" target="_blank" class="video-card">
+                            <img src="{{ project.details.thumbnail_url }}" alt="Thumbnail for {{ project.details.title }}">
+                            <p class="video-title">{{ project.details.title }}</p>
+                        </a>
+                    {% else %}
+                        <a href="{{ project.youtube_url }}" target="_blank" class="video-card video-card-no-details">{{ project.name }} (details unavailable)</a>
+                    {% endif %}
                 {% endfor %}
                 </div>
             </div>

@@ -1,0 +1,10 @@
+runtime: python311 # Specifies the Python version
+
+# The entrypoint is the command that starts your web server.
+# It tells gunicorn to serve the 'app' object from your 'app.py' file.
+entrypoint: gunicorn -b :$PORT app:app
+
+# Environment variables for your application in production.
+env_variables:
+  # IMPORTANT: Generate a new, strong secret key for production.
+  SECRET_KEY: 'your-production-secret-key-goes-here'

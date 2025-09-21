@@ -4,6 +4,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 from datetime import datetime
+import logging
 import os
 
 from data_loader import load_json_data
@@ -11,26 +12,35 @@ from skill_mapper import extract_skills
 from recommender import recommend_careers, analyze_skill_gap, recommend_courses
 from youtube_service import get_video_details, extract_video_id_from_url, search_videos
 
+# Set up basic logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 # Load environment variables from .env file
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
-    print(f"Info: Loading environment variables from {dotenv_path}")
+    logging.info(f"Loading environment variables from {dotenv_path}")
     load_dotenv(dotenv_path=dotenv_path)
 else:
     # This is not a critical error, as the key might be set in the system's environment
-    print("Info: .env file not found. Assuming environment variables are set globally.")
+    logging.info(".env file not found. Assuming environment variables are set globally.")
 
 # --- Resume Parsing Imports and Warnings ---
+missing_deps = []
 try:
     import PyPDF2
 except ImportError:
     PyPDF2 = None
-    print("Warning: PyPDF2 is not installed. PDF resume uploads will not work. Run 'pip install PyPDF2'")
+    missing_deps.append("PyPDF2")
+
 try:
     import docx
 except ImportError:
     docx = None
-    print("Warning: python-docx is not installed. DOCX resume uploads will not work. Run 'pip install python-docx'")
+    missing_deps.append("python-docx")
+
+if missing_deps:
+    install_command = f"pip install {' '.join(missing_deps)}"
+    logging.warning(f"Optional dependencies not installed for resume parsing. To enable PDF/DOCX uploads, run: '{install_command}'")
 
 app = Flask(__name__)
 
@@ -193,7 +203,7 @@ def extract_text_from_file(file_storage):
         return handler_info['func'](stream)
     except Exception as e:
         file_type_name = handler_info['name']
-        print(f"Error reading {file_type_name} file: {e}")
+        logging.error(f"Error reading {file_type_name} file: {e}")
         flash(f"Could not read the uploaded {file_type_name} file. It might be corrupted or protected.", "error")
         return None
 
@@ -221,30 +231,44 @@ def analyze():
     # 2. Get career recommendations
     career_recommendations = recommend_careers(user_skills, CAREERS_DATA)
 
-    # 3. For EACH recommendation, perform skill gap analysis and get project details
+    # --- New: Efficiently fetch all YouTube video details at once ---
+    all_project_video_ids = set()
+    for rec in career_recommendations:
+        for p in rec['career'].get('project_ideas', []):
+            video_id = extract_video_id_from_url(p.get('youtube_url', ''))
+            if video_id:
+                all_project_video_ids.add(video_id)
+    
+    all_details_map = {}
+    if all_project_video_ids:
+        video_details_list = get_video_details(list(all_project_video_ids))
+        all_details_map = {detail['id']: detail for detail in video_details_list}
+
+    # 3. For EACH recommendation, perform skill gap analysis and add project details
     for rec in career_recommendations:
         career = rec['career']
         required_skills = career['required_skills']
-        
+
         # Analyze skill gap and add to the recommendation object
         skill_gap = analyze_skill_gap(user_skills, required_skills)
         rec['skill_gap'] = skill_gap
-        
+
         # Recommend courses and add to the recommendation object
         course_recs = recommend_courses(skill_gap, COURSES_DATA)
         rec['course_recommendations'] = course_recs
-        
-        # Fetch YouTube video details for project ideas
+
+        # --- Corrected YouTube Project Suggestion Logic ---
+        # This logic correctly associates project ideas from careers.json with details fetched from the YouTube API.
         project_ideas = career.get('project_ideas', [])
 
-        video_ids = []
-        if project_ideas:
-            for p in project_ideas:
-                video_id = extract_video_id_from_url(p.get('youtube_url', ''))
-                if video_id:
-                    video_ids.append(video_id)
-        if video_ids:
-            rec['career']['project_ideas_detailed'] = get_video_details(video_ids)
+        # Reconstruct the project ideas list, combining original data with fetched details.
+        # This preserves the original order from careers.json.
+        detailed_project_ideas = []
+        for p in project_ideas:
+            video_id = extract_video_id_from_url(p.get('youtube_url', ''))
+            detailed_project_ideas.append({**p, 'details': all_details_map.get(video_id)})
+
+        rec['career']['project_ideas_detailed'] = detailed_project_ideas
 
     analysis_results = {
         'user_skills': user_skills,

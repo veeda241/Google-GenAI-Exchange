@@ -3,21 +3,22 @@
         "title": "Data Scientist",
         "description": "Analyzes and interprets complex data to help organizations make better decisions.",
         "avg_salary": 120000,
+        "more_info_url": "https://www.coursera.org/articles/data-scientist",
         "required_skills": ["Python", "Machine Learning", "Data Analysis", "SQL", "Statistics", "Communication", "Pandas", "Scikit-learn"],
         "project_ideas": [
-            { "name": "Customer Churn Prediction", "youtube_url": "https://www.youtube.com/watch?v=p_t_n_n_vV8" },
-            { "name": "Customer Churn Prediction Project", "youtube_url": "https://www.youtube.com/watch?v=UFbe_B86I8Q" },
-            { "name": "Sentiment Analysis of Movie Reviews", "youtube_url": "https://www.youtube.com/watch?v=1LJGpVxT1nE" }
+            { "name": "Customer Churn Prediction Project", "youtube_url": "https://www.youtube.com/watch?v=qNglJgNOb7A" },
+            { "name": "Sentiment Analysis of Movie Reviews", "youtube_url": "https://www.youtube.com/watch?v=Ah-J2T2a-sM" }
         ]
     },
     {
         "title": "Backend Developer",
         "description": "Builds and maintains the server-side logic of web applications.",
         "avg_salary": 110000,
+        "more_info_url": "https://www.coursera.org/articles/back-end-developer",
         "required_skills": ["Python", "Java", "Go", "Node.js", "SQL", "NoSQL", "REST API", "Docker", "AWS"],
         "project_ideas": [
             { "name": "Build a RESTful API for a Blog", "youtube_url": "https://www.youtube.com/watch?v=pKd0Rpw7O48" },
-            { "name": "Create a URL Shortener Service", "youtube_url": "https://www.youtube.com/watch?v=S_e5c_D1IuU" }
+            { "name": "Create a URL Shortener Service", "youtube_url": "https://www.youtube.com/watch?v=HHUi8F_qAXM&t=1s" }
         ]
     },
     {
@@ -26,8 +27,8 @@
         "avg_salary": 105000,
         "required_skills": ["JavaScript", "React", "Angular", "Vue.js", "HTML", "CSS", "UI/UX Design", "REST API", "Git"],
         "project_ideas": [
-            { "name": "Build a Portfolio Website with React", "youtube_url": "https://www.youtube.com/watch?v=hYv6eIHn6cQ" },
-            { "name": "Create a Weather Dashboard App", "youtube_url": "https://www.youtube.com/watch?v=9P5_2rE-2-g" }
+            { "name": "Build a Portfolio Website with React", "youtube_url": "https://www.youtube.com/watch?v=jhCDW8Bnesg&list=PL0JfpSrXxTMyybivS1O2RPQw6V173EaWT" },
+            { "name": "Create a Weather Dashboard App", "youtube_url": "https://www.youtube.com/watch?v=GARsvcSdtj8&list=PLSCiNE9DUnEIOnCjDPTIdhR-4Ztr5dX_0" }
         ]
     },
     {
@@ -36,9 +37,9 @@
         "avg_salary": 115000,
         "required_skills": ["JavaScript", "React", "Node.js", "Python", "SQL", "REST API", "Git", "Docker", "Problem Solving"],
         "project_ideas": [
-            { "name": "Develop an E-commerce Platform (MERN)", "youtube_url": "https://www.youtube.com/watch?v=u_d_3aD2s2I" },
-            { "name": "Develop an E-commerce Platform (MERN)", "youtube_url": "https://www.youtube.com/watch?v=rgFKi2GsfDE" },
-            { "name": "Build a Real-time Chat Application", "youtube_url": "https://www.youtube.com/watch?v=jD7FnbI76Hg" }
+            { "name": "E-commerce Platform (MERN Stack)", "youtube_url": "https://www.youtube.com/watch?v=y99YgaQjgx4" },
+            { "name": "MERN E-commerce from Scratch", "youtube_url": "https://www.youtube.com/watch?v=KKJeBswz4e8&list=PLhFBHuT4t3aCiG8KjDlgKubRMtwAQTi9I" },
+            { "name": "Build a Real-time Chat Application", "youtube_url": "https://www.youtube.com/watch?v=bR4b_Io8shE" }
         ]
     },
     {
@@ -47,8 +48,8 @@
         "avg_salary": 125000,
         "required_skills": ["CI/CD", "Docker", "Kubernetes", "AWS", "Azure", "GCP", "Scripting", "Linux", "Network Security"],
         "project_ideas": [
-            { "name": "Automate a CI/CD Pipeline with GitHub Actions", "youtube_url": "https://www.youtube.com/watch?v=R8_e_qg4_aA" },
-            { "name": "Deploy a Microservices App with Kubernetes", "youtube_url": "https://www.youtube.com/watch?v=3gwO5lzhD_A" }
+            { "name": "Automate a CI/CD Pipeline with GitHub Actions", "youtube_url": "https://www.youtube.com/watch?v=YLtlz88zrLg" },
+            { "name": "Deploy a Microservices App with Kubernetes", "youtube_url": "https://www.youtube.com/watch?v=Ox-iZtArfyw" }
         ]
     },
     {
@@ -57,8 +58,8 @@
         "avg_salary": 130000,
         "required_skills": ["Project Management", "Agile", "Scrum", "Communication", "Market Research", "Problem Solving", "UI/UX Design"],
         "project_ideas": [
-            { "name": "Create a Product Roadmap for a New App Feature", "youtube_url": "https://www.youtube.com/watch?v=iE1_0T7D18c" },
-            { "name": "Conduct User Research and Write a PRD", "youtube_url": "https://www.youtube.com/watch?v=hJd3FFg3iIQ" }
+            { "name": "Create a Product Roadmap for a New App Feature", "youtube_url": "https://www.youtube.com/watch?v=b4YVHTqQPk8&t=140s" },
+            { "name": "Conduct User Research and Write a PRD", "youtube_url": "https://www.youtube.com/watch?v=JJzODsXsCt0" }
         ]
     },
     {
@@ -67,8 +68,8 @@
         "avg_salary": 115000,
         "required_skills": ["Network Security", "Cybersecurity", "Linux", "Scripting", "SIEM", "Penetration Testing", "Incident Response"],
         "project_ideas": [
-            { "name": "Build a Network Intrusion Detection System", "youtube_url": "https://www.youtube.com/watch?v=N4mR2tMm9yA" },
-            { "name": "Develop a Keylogger for Educational Purposes", "youtube_url": "https://www.youtube.com/watch?v=8p_3iRj4-4s" }
+            { "name": "Build a Network Intrusion Detection System", "youtube_url": "https://www.youtube.com/watch?v=2MVfZPuhJaE" },
+            { "name": "Develop a Keylogger for Educational Purposes", "youtube_url": "https://www.youtube.com/watch?v=9HCmuaertF8&list=PLhTjy8cBISEoYoJd-zR8EV0NqDddAjK3m" }
         ]
     },
     {
@@ -77,8 +78,8 @@
         "avg_salary": 112000,
         "required_skills": ["Mobile Development", "iOS", "Android", "Swift", "Kotlin", "React Native", "REST API", "Git"],
         "project_ideas": [
-            { "name": "Create a To-Do List App with React Native", "youtube_url": "https://www.youtube.com/watch?v=VozPNrt-LfE" },
-            { "name": "Create a To-Do List App with React Native", "youtube_url": "https://www.youtube.com/watch?v=0-S5a0eXPoc" },
+            { "name": "React Native To-Do App (2023)", "youtube_url": "https://www.youtube.com/watch?v=CfSK9niSAxY" },
+            { "name": "React Native To-Do App with Redux", "youtube_url": "https://www.youtube.com/watch?v=LOSRNL4N7ZY" },
             { "name": "Build a Recipe Finder App using a Public API", "youtube_url": "https://www.youtube.com/watch?v=sp9r6hS_a8k" }
         ]
     }

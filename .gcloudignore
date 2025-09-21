@@ -1,0 +1,12 @@
+# This file tells the gcloud CLI which files to ignore when deploying.
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Local Database - This should not be deployed. See note on databases.
+database.db
+
+# Environment files
+.env

@@ -1,20 +1,24 @@
 # AI Career Advisor
 
-A personalized AI career advisor that maps skills, recommends career paths, and prepares users for the evolving job market by identifying skill gaps and suggesting learning resources.
+A personalized AI-powered career advisor that maps your skills, recommends career paths, and prepares you for the job market by identifying skill gaps and suggesting learning resources. This application now includes user accounts to save and review past analyses.
 
 ## Features
 
-- **Skill Extraction**: Identifies technical and soft skills from user-provided text (like a resume summary).
-- **Career Recommendation**: Uses a TF-IDF and Cosine Similarity model to match user skills against a database of careers.
+- **Skill Extraction**: Identifies skills from user-provided text or an uploaded resume (PDF, DOCX, TXT).
+- **Career Recommendation**: Matches user skills against a database of careers to suggest suitable paths.
 - **Skill Gap Analysis**: Shows the user which skills they are missing for their top recommended career path.
-- **Personalized Learning Plan**: Recommends online courses to help bridge the identified skill gaps.
+- **Personalized Learning Plan**: Recommends online courses and YouTube project ideas to bridge skill gaps.
+- **User Accounts & History**: Sign up, log in, and view a history of your past analysis results.
 
 ## Tech Stack
 
 - **Backend**: Python, Flask
-- **AI/ML**: Scikit-learn
+- **Database**: SQLAlchemy, SQLite
+- **Authentication**: Flask-Login, Flask-Bcrypt
+- **AI/ML**: Custom recommendation logic (Jaccard Similarity)
 - **Frontend**: HTML, CSS
 - **Data**: JSON
+- **APIs**: YouTube Data API v3
 
 ## Project Structure
 
