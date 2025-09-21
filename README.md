@@ -37,8 +37,8 @@ A personalized AI-powered career advisor that maps your skills, recommends caree
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
-    cd ai-career-advisor
+    git clone <https://github.com/veeda241/Google-GenAI-Exchange/edit/main>
+    cd Google-GenAI-Exchange
     ```
 
 2.  **Create a virtual environment and install dependencies:**
